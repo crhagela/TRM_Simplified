@@ -1,0 +1,69 @@
+model label="Mode choice" version=1.5
+source destfield=Destination destinations=True idfield=TripID name=Trips origfield=Origin origins=True primary=True type=Survey view=triangle_trips
+source idfield=ID name=access type=Zonal view=access
+source colindex=RCIndex file="P:\crhagela\Transportation Models\Lab6\Mode Choice Materials\transit_skims_AM.mtx" filelabel="AM Transit" name=Transit rowindex=RCIndex type=Matrix
+source colindex=Destination file="P:\crhagela\Transportation Models\Lab6\Mode Choice Materials\walk_skims_All.mtx" filelabel=Walk name=Walk rowindex=Origin type=Matrix
+source colindex=Destination file="P:\crhagela\Transportation Models\Lab6\Mode Choice Materials\bike_skims_All.mtx" filelabel=Bike name=Bike rowindex=Origin type=Matrix
+source colindex=Destination file="P:\crhagela\Transportation Models\Lab6\Mode Choice Materials\auto_skims_MD.mtx" filelabel="MD Auto" name=Auto rowindex=Origin type=Matrix
+  segvar source=Trips spec=NumericTripType
+  segment id=1 name=HBW
+    term coefficient=-3.13146e-05 name=Time
+    term coefficient=0.220143 name=Transfers
+    term coefficient=7.57466e-08 name=AccessOrig
+    term coefficient=3.81169e-08 name=AccessDest
+    choice source=Trips spec=ModeNumeric
+    alternative id=1 name=SOV
+      data source=Auto spec=TimeMD term=Time
+    alternative asc=-2.17085 id=2 name=HOV
+      data source=Auto spec=TimeMD term=Time
+    alternative asc=-1.22352 id=3 name=Walk
+      data source=Walk spec=Time term=Time
+    alternative asc=-4.95617 id=4 name=Bike
+      data source=Bike spec=Time term=Time
+    alternative asc=-2.32025 id=6 name=Transit
+      available source=Transit spec=Available
+      data source=Transit spec="Total Time" term=Time
+      data source=Transit spec="Number of Transfers" term=Transfers
+      data source=access spec=Access_transit_AM_Retail_30 term=AccessOrig
+      data source=access spec=Access_transit_AM_Retail_30 term=AccessDest type=Destination
+  segment id=2 name=HBO
+    term coefficient=-3.44749e-05 name=Time
+    term coefficient=-0.00159406 name=TimeSB
+    term coefficient=0.196161 name=Transfers
+    term coefficient=6.88565e-08 name=AccessOrig
+    term coefficient=5.29642e-08 name=AccessDest
+    choice source=Trips spec=ModeNumeric
+    alternative id=1 name=SOV
+      data source=Auto spec=TimeMD term=Time
+    alternative asc=0.131699 id=2 name=HOV
+      data source=Auto spec=TimeMD term=Time
+    alternative asc=-0.0852153 id=3 name=Walk
+      data source=Walk spec=Time term=Time
+    alternative asc=-3.40314 id=4 name=Bike
+      data source=Bike spec=Time term=Time
+    alternative asc=-2.41172 id=5 name="School bus"
+      data source=Auto spec=TimeMD term=TimeSB
+    alternative asc=-1.99028 id=6 name=Transit
+      available source=Transit spec=Available
+      data source=Transit spec="Total Time" term=Time
+      data source=Transit spec="Number of Transfers" term=Transfers
+      data source=access spec=Access_transit_AM_Retail_30 term=AccessOrig
+      data source=access spec=Access_transit_AM_Retail_30 term=AccessDest type=Destination
+  segment id=3 name=NHB
+    term coefficient=-0.016599 name=Time
+    term coefficient=0.487477 name=Transfers
+    term coefficient=-1.02321e-05 name=AccessOrig
+    term coefficient=0.000504662 name=AccessDest
+    choice source=Trips spec=ModeNumeric
+    alternative id=1 name=SOV
+      data source=Auto spec=TimeMD term=Time
+    alternative asc=-0.176646 id=2 name=HOV
+      data source=Auto spec=TimeMD term=Time
+    alternative asc=-0.346427 id=3 name=Walk
+      data source=Walk spec=Time term=Time
+    alternative asc=-3.66681 id=6 name=Transit
+      available source=Transit spec=Available
+      data source=Transit spec="Total Time" term=Time
+      data source=Transit spec="Number of Transfers" term=Transfers
+      data source=access spec=Access_transit_AM_Retail_30 term=AccessOrig
+      data source=access spec=Access_transit_AM_Retail_30 term=AccessDest type=Destination
